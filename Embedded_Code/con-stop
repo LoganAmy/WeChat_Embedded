@@ -1,0 +1,4 @@
+#!/bin/bash
+#put it in /etc/network/if-post-down.d/
+service con-websocket stop
+#service xunlei stop

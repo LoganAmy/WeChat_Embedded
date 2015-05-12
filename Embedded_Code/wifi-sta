@@ -1,0 +1,48 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: directadmin
+# Required-Start: 
+# Required-Stop: 
+# Should-Start: 
+# Should-Stop: 
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start and stop directadmin
+# Description: DirectAdmin
+### END INIT INFO
+
+#put it in /etc/init.d/
+#excute update-rc.d wifi-sta start 20 2 3 4 5 . stop 80 0 1 6 .
+start()
+{
+	echo "start WiFi-STAService"
+	wpa_supplicant -B -Dwext -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf &
+	dhclient wlan0
+	ps aux |grep 'mplayer'|grep -v grep|awk '{print $2}'|xargs kill -9
+	service lightdm restart
+	exit 0;
+}
+stop()
+{
+	ps aux |grep 'wpa_supplicant'|grep -v grep|awk '{print $2}'|xargs kill -9
+	ps aux |grep 'dhclient'|grep -v grep|awk '{print $2}'|xargs kill -9
+	echo "stop WiFi-STAService"
+}
+
+case "$1" in
+start)
+   	start
+    	;;
+stop)
+    	stop
+    	;;
+restart)
+	stop
+	start
+    	;;
+*)
+	echo "usage: $0 start|stop|restart"
+	exit 0;
+esac
+
+

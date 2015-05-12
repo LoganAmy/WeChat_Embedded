@@ -1,0 +1,41 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: directadmin
+# Required-Start:
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start:
+# Default-Stop:
+# Short-Description: Start and stop directadmin
+# Description: DirectAdmin
+### END INIT INFO
+
+#put it in /etc/init.d/
+start()
+{
+	echo "start WeChatService"
+	/root/program/wx_connection.py &
+	exit 0;
+}
+stop()
+{
+	ps auxf|grep 'wx_connection.py'|grep -v grep|awk '{print $2}'|xargs kill -9
+	echo "stop WeChatService"
+}
+
+case "$1" in
+start)
+   	start
+    	;;
+stop)
+    	stop
+    	;;
+restart)
+	stop
+	start
+    	;;
+*)
+	echo "usage: $0 start|stop|restart"
+	exit 0;
+esac

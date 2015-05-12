@@ -1,0 +1,48 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: directadmin
+# Required-Start: 
+# Required-Stop: 
+# Should-Start: 
+# Should-Stop: 
+# Default-Start: 
+# Default-Stop: 
+# Short-Description: Start and stop directadmin
+# Description: DirectAdmin
+### END INIT INFO
+
+#put it in /etc/init.d/
+start()
+{
+	echo "start WiFi-APService"
+	/root/program/hostapd /root/program/rtl_hostapd.conf -B 
+	ip addr add  192.168.1.1/24 dev  wlan0 
+	service dnsmasq start
+	iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+	ps aux |grep 'mplayer'|grep -v grep|awk '{print $2}'|xargs kill -9
+	service lightdm restart
+	exit 0;
+}
+stop()
+{
+	service dnsmasq stop
+	ps aux |grep 'hostapd' |grep -v grep|awk '{print $2}'|xargs kill -9
+	echo "stop WiFi-APService"
+}
+
+case "$1" in
+start)
+   	start
+    	;;
+stop)
+    	stop
+    	;;
+restart)
+	stop
+	start
+    	;;
+*)
+	echo "usage: $0 start|stop|restart"
+	exit 0;
+esac
+

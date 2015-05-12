@@ -1,0 +1,4 @@
+#!/bin/bash
+#put it in /etc/network/if-up.d/
+service con-websocket restart
+#service xunlei start

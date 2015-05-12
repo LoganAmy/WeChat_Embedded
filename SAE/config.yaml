@@ -1,0 +1,5 @@
+name: mylovefish
+version: 1
+
+handle:
+- rewrite: if( path ~ "(/_sae/channel/.*)" ) goto "channelOnline.php?callback=1&type=$1"
